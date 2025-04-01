@@ -96,3 +96,204 @@ Accept : application/json
 - If the request was successful `(200 ok)`, the client extract and displays the data.
 - If the request failed `(404 not found)`, it may show an error message.
 - If the server returns a validation error `(400 Bad Request)`, the client can ask the user to correct input data.
+
+# Rest method example.py
+
+```
+import requests
+Base_URL="https://jsonplaceholder.typicode.com"
+
+def example_get():
+    """GET request ka example
+    Get method ka kam hai resource reterive karna
+    id=1 fetch in this place"""
+    
+    url=f"{Base_URL}/posts/1"
+    response=requests.get(url)
+    #check HTTP status code (200 means success)
+    response.raise_for_status()
+    data=response.json()#converts response to python dict
+    print("GeET Response")
+    print(data)
+    print("-" * 50)
+example_get()
+```
+**Output** : 
+
+```
+GeET Response
+{'userId': 1, 'id': 1, 'title': 'sunt aut facere repellat provident occaecati excepturi optio reprehenderit', 'body': 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto'}
+--------------------------------------------------
+```
+
+**Post method example**
+```
+import requests
+BASE_URL = "https://jsonplaceholder.typicode.com"
+def example_post():
+    """Post request ka example.
+    Post method new resource create karne ke liye use hota hai.
+    """
+    url=f"{BASE_URL}/posts"
+    payload={
+        "title":"foo",
+        "body":"bar",
+        "userId":1
+    }
+    response=requests.post(url,json=payload,timeout=5)
+    response.raise_for_status()
+    data=response.json()
+    print("Post response")
+    print(data)
+    print("-" *50)
+example_post()
+```
+**Output** 
+```
+Post response
+{'title': 'foo', 'body': 'bar', 'userId': 1, 'id': 101}
+--------------------------------------------------
+```
+
+**Put Method Example**
+
+```
+import requests
+BASE_URL = "https://jsonplaceholder.typicode.com"
+def example_put():
+    """Put request ka example
+    Put method ek existing resource ko completely update karta hai"""
+    url=f"{BASE_URL}/posts/1"
+    payload={
+        "title":"Updated Title",
+        "body":"Updated body",
+        "userId":1
+    }
+    response = requests.put(url, json=payload, timeout=5)
+    response.raise_for_status()
+    data = response.json()
+    print("PUT Response:")
+    print(data)
+    print("-" * 50)
+example_put()
+```
+**Output** :
+```
+PUT Response:
+{'title': 'Updated Title', 'body': 'Updated body', 'userId': 1, 'id': 1}
+--------------------------------------------------
+```
+
+**Patch Method Example**
+
+```
+import requests
+BASE_URL = "https://jsonplaceholder.typicode.com"
+def example_patch():
+    """Patch request ka example
+    Patch method exisiting resource ka partial update karta hai"""
+    url=f"{BASE_URL}/posts/1"
+    payload={
+        "title":"patched title"
+    }
+    response=requests.patch(url,json=payload,timeout=5)
+    response.raise_for_status()
+    data=response.json()
+    print(data)
+    print("-"*50)
+example_patch()
+```
+**Output** : 
+
+```
+{'userId': 1, 'id': 1, 'title': 'patched title', 'body': 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto'}
+--------------------------------------------------
+```
+
+**Delete Method Example** 
+
+```
+import requests
+BASE_URL = "https://jsonplaceholder.typicode.com"
+def example_delete():
+    """Delete request ka example
+    DELETE method resource ko delete karta hai"""
+    url=f"{BASE_URL}/posts/1"
+    response=requests.delete(url,timeout=5)
+     # JSONPlaceholder returns an empty object {} on delete.
+    if response.status_code == 200 or response.status_code == 204:
+        print("DELETE Response: Resource deleted successfully.")
+    else:
+        print("DELETE Response: Failed to delete resource.")
+    print("-" * 50)
+example_delete()
+```
+
+**Output** : 
+
+```
+DELETE Response: Resource deleted successfully.
+--------------------------------------------------
+```
+
+**Options method example**
+```
+import requests
+BASE_URL = "https://jsonplaceholder.typicode.com"
+def example_options():
+    """Options method sever se batata hai ki is resource per konsa
+    HTTP method allowed hai"""
+    
+    url=f"{BASE_URL}/posts"
+    response=requests.options(url,timeout=5)
+    allow_methods=response.headers.get("Allow")
+    print(f"Allowed methods for {url}: {allow_methods}")
+    print("-" * 50)
+example_options
+```
+**Output** : 
+
+```
+<function __main__.example_options()>
+```
+
+**Head method example** 
+
+```
+import requests
+BASE_URL = "https://jsonplaceholder.typicode.com"
+def example_head():
+    """
+    Example of sending a HEAD request to a URL and printing the response headers.
+    """
+    # Sending a HEAD request to the URL
+    # The URL is for a specific post on the JSONPlaceholder API
+    # This API is a fake online REST API for testing and prototyping
+    url = f"{BASE_URL}/posts/1"
+
+    response = requests.head(url, timeout=5)
+    response.raise_for_status()
+    # Print headers only
+    print("HEAD Response Headers:")
+    print(response.headers)
+    print("-" * 50)
+example_head()
+```
+**Options** 
+
+```
+HEAD Response Headers:
+{'Date': 'Tue, 01 Apr 2025 15:20:03 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Connection': 'keep-alive', 'Report-To': '{"group":"heroku-nel","max_age":3600,"endpoints":[{"url":"https://nel.heroku.com/reports?ts=1738265099&sid=e11707d5-02a7-43ef-b45e-2cf4d2036f7d&s=k5%2F8pjjAdp0ulTl1%2FMlEVVh%2FLvpGISgzWq9GOo8Gg3U%3D"}]}', 'Reporting-Endpoints': 'heroku-nel=https://nel.heroku.com/reports?ts=1738265099&sid=e11707d5-02a7-43ef-b45e-2cf4d2036f7d&s=k5%2F8pjjAdp0ulTl1%2FMlEVVh%2FLvpGISgzWq9GOo8Gg3U%3D', 'Nel': '{"report_to":"heroku-nel","max_age":3600,"success_fraction":0.005,"failure_fraction":0.05,"response_headers":["Via"]}', 'X-Powered-By': 'Express', 'X-Ratelimit-Limit': '1000', 'X-Ratelimit-Remaining': '999', 'X-Ratelimit-Reset': '1738265115', 'Vary': 'Origin, Accept-Encoding', 'Access-Control-Allow-Credentials': 'true', 'Cache-Control': 'max-age=43200', 'Pragma': 'no-cache', 'expires': '-1', 'X-Content-Type-Options': 'nosniff', 'etag': 'W/"124-yiKdLzqO5gfBrJFrcdJ8Yq0LGnU"', 'Via': '1.1 vegur', 'Age': '14208', 'cf-cache-status': 'HIT', 'Server': 'cloudflare', 'CF-RAY': '9299117cec8f9d5d-AMS', 'Content-Encoding': 'gzip', 'alt-svc': 'h3=":443"; ma=86400', 'server-timing': 'cfL4;desc="?proto=TCP&rtt=206964&min_rtt=194805&rtt_var=78030&sent=5&recv=6&lost=0&retrans=0&sent_bytes=2840&recv_bytes=786&delivery_rate=14079&cwnd=252&unsent_bytes=0&cid=362cdba2e1b434ee&ts=288&x=0"'}
+--------------------------------------------------
+```
+
+
+
+
+
+
+
+
+
+
+
